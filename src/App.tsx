@@ -1,7 +1,7 @@
-import React from 'react';
+import sample from 'assets/store-sample-img.png';
 
 function App() {
-  return <div>Hello World</div>;
+  return <img src={sample} alt="샘플 도면"></img>;
 }
 
 export default App;
