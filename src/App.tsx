@@ -1,7 +1,7 @@
-import sample from 'assets/store-sample-img.png';
+import Admin from 'page/admin/Admin';
 
 function App() {
-  return <img src={sample} alt="샘플 도면"></img>;
+  return <Admin />;
 }
 
 export default App;
