@@ -6,7 +6,7 @@ const Admin = () => {
   const [storeName, setStoreName] = useState('');
   const [src, setSrc] = useState('');
   const [imgSize, setImgSizeize] = useState({ width: 0, height: 0 });
-  const [stores, setStores] = useState<{ [propName: string]: number[] }>({});
+  const [stores, setStores] = useState<{ [propName: string]: number[] | undefined }>({});
   const [isChangingStore, setIsChangingStore] = useState('');
 
   return (
@@ -38,7 +38,13 @@ const Admin = () => {
             value={storeName}
             onChange={(e) => setStoreName(e.currentTarget.value)}
           />
-          <button onClick={() => setStores((pre) => ({ ...pre, [storeName]: [0, 0] }))}>
+          <button
+            onClick={() => {
+              if (!storeName.length) return alert('매장 이름을 입력해주세요.');
+              else if (stores[storeName]) return alert('이미 등록된 매장입니다.');
+              else setStores((pre) => ({ ...pre, [storeName]: [0, 0] }));
+            }}
+          >
             매장 추가
           </button>
           <div
@@ -59,12 +65,13 @@ const Admin = () => {
             />
             {Object.keys(stores).length
               ? Object.keys(stores).map((store) => {
+                  if (!stores[store]) return null;
                   return (
                     <div
                       draggable
                       className={style.store}
                       key={store}
-                      style={{ left: stores[store][0], top: stores[store][1] }}
+                      style={{ left: stores[store]![0], top: stores[store]![1] }}
                       onDragStart={(e) => {
                         setIsChangingStore(store);
                       }}
@@ -78,13 +85,17 @@ const Admin = () => {
                         const { offsetX, offsetY } = nativeEvent;
                         setStores((pre) => ({
                           ...pre,
-                          [store]: [pre[store][0] + offsetX - 50, pre[store][1] + offsetY - 50],
+                          [store]: [pre[store]![0] + offsetX - 50, pre[store]![1] + offsetY - 50],
                         }));
                       }}
                     >
                       <div>
                         {store}
-                        <button>삭제</button>
+                        <button
+                          onClick={() => setStores((pre) => ({ ...pre, [store]: undefined }))}
+                        >
+                          삭제
+                        </button>
                       </div>
                     </div>
                   );
