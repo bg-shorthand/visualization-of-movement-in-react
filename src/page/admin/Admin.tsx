@@ -72,6 +72,9 @@ const Admin = () => {
                         setIsChangingStore('');
                       }}
                       onMouseDown={({ nativeEvent }) => {
+                        const target = nativeEvent.target as HTMLElement;
+                        if (target.matches('button')) return;
+
                         const { offsetX, offsetY } = nativeEvent;
                         setStores((pre) => ({
                           ...pre,
