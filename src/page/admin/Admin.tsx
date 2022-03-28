@@ -64,7 +64,6 @@ const Admin = () => {
               onDragOver={preventDefaultHandler}
               onDrop={(e) => {
                 setCoodinateHandler(e);
-                setIsChangingStore('');
               }}
             />
             {Object.keys(stores).length
@@ -85,6 +84,11 @@ const Admin = () => {
                       onDragStart={(e) => {
                         setStartCoodinateHandler(e);
                         setIsChangingStore(store);
+                      }}
+                      onDragEnd={() => setIsChangingStore('')}
+                      onDragOver={preventDefaultHandler}
+                      onDrop={(e) => {
+                        setCoodinateHandler(e);
                       }}
                     >
                       <div>
