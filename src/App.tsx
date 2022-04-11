@@ -1,6 +1,6 @@
-import Canvas from 'components/canvas/Canvas';
 import Admin from 'page/admin/Admin';
 import { useState } from 'react';
+import MovementStatistics from 'page/movementStatistics/MovementStatistics';
 
 function App() {
   const [page, setPage] = useState<'admin' | 'user'>('admin');
@@ -11,7 +11,7 @@ function App() {
         <button onClick={() => setPage('admin')}>ADMIN</button>
         <button onClick={() => setPage('user')}>USER</button>
       </div>
-      {page === 'admin' ? <Admin /> : <Canvas />}
+      {page === 'admin' ? <Admin /> : <MovementStatistics />}
     </>
   );
 }
