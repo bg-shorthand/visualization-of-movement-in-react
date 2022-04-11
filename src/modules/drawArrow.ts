@@ -1,13 +1,13 @@
+import { ARROW_SIZE } from 'const/const';
+
 export function drawArrow(
   ctx: CanvasRenderingContext2D,
   x0: number, // 시작점 x
   y0: number, // 시작점 y
   x1: number, // 끝점 x
   y1: number, // 끝점 y
-  aWidth: number, // 화살촉이 선에서 수직으로 연장되는 거리
-  aLength: number, // 화살 날개의 길이
-  lineWidth: number, // 선의 전체 굵기
-  secondary: boolean
+  size: 'xs' | 's' | 'm' | 'l' | 'xl',
+  secondary = true
 ) {
   const dx = x1 - x0;
   const dy = y1 - y0;
@@ -17,6 +17,11 @@ export function drawArrow(
   const arrowGap = 35;
   const arcLength = arrowGap + 50;
   const curveAlgle = 30;
+
+  const { aWidth, aLength, lineWidth } = ARROW_SIZE[size];
+  // aWidth: number, // 화살촉이 선에서 수직으로 연장되는 거리
+  // aLength: number, // 화살 날개의 길이
+  // lineWidth: number, // 선의 전체 굵기
 
   if (ctx) {
     ctx.lineWidth = lineWidth;
