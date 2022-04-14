@@ -11,24 +11,24 @@ const ARROW_SIZE = {
     lineWidth: 2,
   },
   s: {
-    aWidth: 7,
-    aLength: 10,
-    lineWidth: 2,
+    aWidth: 9,
+    aLength: 12,
+    lineWidth: 4,
   },
   m: {
-    aWidth: 7,
-    aLength: 10,
-    lineWidth: 2,
+    aWidth: 11,
+    aLength: 14,
+    lineWidth: 6,
   },
   l: {
-    aWidth: 7,
-    aLength: 10,
-    lineWidth: 2,
+    aWidth: 13,
+    aLength: 16,
+    lineWidth: 8,
   },
   xl: {
-    aWidth: 7,
-    aLength: 10,
-    lineWidth: 2,
+    aWidth: 15,
+    aLength: 18,
+    lineWidth: 10,
   },
 };
 
