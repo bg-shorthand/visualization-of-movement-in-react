@@ -44,7 +44,7 @@ export function drawArrow(
 
     // Arrow Header
     ctx.stroke();
-    ctx.translate(length - arrowWholeLength + 2, -aWidth + arrowGap);
+    ctx.translate(length - arrowWholeLength + 3, -aWidth + arrowGap);
     ctx.rotate((Math.PI / 180) * 120);
     ctx.beginPath();
     ctx.moveTo(0, 0);

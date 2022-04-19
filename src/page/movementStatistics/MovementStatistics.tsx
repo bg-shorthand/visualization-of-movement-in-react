@@ -1,33 +1,35 @@
 import { mockData } from 'assets/mockData';
 // import storeImg from 'assets/jdc-stores-sample.png';
 import storeImg from 'assets/store-sample-img.png';
-import { Stores } from 'const/type';
 import { drawArrow } from 'modules/drawArrow';
+import { selectSize } from 'modules/selectSize';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import styles from './MovementStatistics.module.scss';
 
 const MovementStatistics = () => {
-  const stores = mockData.store as Stores;
+  const stores = mockData.store;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-  const [selectedStores, setSelectedStores] = useState<Stores>([]);
+  const [selectedStores, setSelectedStores] = useState<typeof stores>([]);
 
   const setSelectedStoresHandler: MouseEventHandler<HTMLLIElement> = (e) => {
-    const { id, classList } = e.currentTarget;
+    const { id } = e.currentTarget;
     const matchStore = stores.find((store) => store.name === id);
     if (!(id && matchStore)) return;
-    if (selectedStores.includes(matchStore)) {
-      setSelectedStores(selectedStores.filter((store) => store !== matchStore));
+    if (selectedStores.find((store) => store.name === matchStore.name)) {
+      setSelectedStores(selectedStores.filter((store) => store.name !== matchStore.name));
     } else {
-      setSelectedStores((pre) => [...pre, matchStore]);
+      setSelectedStores((pre) => (pre.length < 2 ? [...pre, matchStore] : [matchStore]));
     }
-    classList.toggle(styles.active);
+  };
+
+  const selectedStoresResetHandler: MouseEventHandler<HTMLButtonElement> = () => {
+    setSelectedStores([]);
   };
 
   useEffect(() => {
-    console.log(selectedStores);
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -35,21 +37,26 @@ const MovementStatistics = () => {
     const img = new Image();
 
     img.onload = () => {
+      const maxSize = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
       const { width, height } = img;
       setCanvasSize({ width, height });
       ctx.drawImage(img, 0, 0);
       // ctx.drawImage(img, 0, 0, 1300, 600);
-
       if (selectedStores.length === 1) {
         stores.forEach((store) => {
           if (store.name === selectedStores[0].name) return;
+          const [selectedStore] = selectedStores;
+
+          const leave = selectedStore.movement[store.name as keyof typeof selectedStore.movement];
+          const come = store.movement[selectedStore.name as keyof typeof store.movement];
+
           drawArrow(
             ctx,
             selectedStores[0].coodinate[0],
             selectedStores[0].coodinate[1],
             store.coodinate[0],
             store.coodinate[1],
-            'xs'
+            selectSize(leave!, maxSize)
           );
           drawArrow(
             ctx,
@@ -57,23 +64,26 @@ const MovementStatistics = () => {
             store.coodinate[1],
             selectedStores[0].coodinate[0],
             selectedStores[0].coodinate[1],
-            'xs',
+            selectSize(come!, maxSize),
             false
           );
         });
       } else {
-        // const renderStores = selectedStores.length <= 2 ? selectedStores : stores
-
-        stores.forEach((firstStore, i) => {
-          stores.forEach((secondStore, j) => {
+        const renderStores = selectedStores.length ? selectedStores : stores;
+        renderStores.forEach((firstStore, i) => {
+          renderStores.forEach((secondStore, j) => {
             if (i <= j) return;
+
+            const leave = firstStore.movement[secondStore.name as keyof typeof firstStore.movement];
+            const come = secondStore.movement[firstStore.name as keyof typeof secondStore.movement];
+
             drawArrow(
               ctx,
               firstStore.coodinate[0],
               firstStore.coodinate[1],
               secondStore.coodinate[0],
               secondStore.coodinate[1],
-              'xs'
+              selectSize(leave!, maxSize)
             );
             drawArrow(
               ctx,
@@ -81,13 +91,14 @@ const MovementStatistics = () => {
               secondStore.coodinate[1],
               firstStore.coodinate[0],
               firstStore.coodinate[1],
-              'xs',
+              selectSize(come!, maxSize),
               false
             );
           });
         });
       }
     };
+
     img.src = storeImg;
   }, [selectedStores, stores]);
 
@@ -99,7 +110,11 @@ const MovementStatistics = () => {
           return (
             <li
               id={store.name}
-              className={styles.storeList}
+              className={
+                styles.storeList +
+                ' ' +
+                (selectedStores.find((v) => v.name === store.name) ? styles.active : '')
+              }
               key={store.name}
               onClick={setSelectedStoresHandler}
               style={{ left: `${store.coodinate[0] - 50}px`, top: `${store.coodinate[1] - 50}px` }}
@@ -109,6 +124,7 @@ const MovementStatistics = () => {
           );
         })}
       </ul>
+      <button onClick={selectedStoresResetHandler}>RESET</button>
     </div>
   );
 };
