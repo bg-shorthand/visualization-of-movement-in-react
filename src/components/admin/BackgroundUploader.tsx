@@ -14,6 +14,7 @@ const BackgroundUploader = ({ setBackgroundSrc, setBackgroundSize }: BackgroundU
   return (
     <input
       type="file"
+      accept="image/*"
       onInput={(e) => {
         const images = e.currentTarget.files;
 
@@ -25,6 +26,8 @@ const BackgroundUploader = ({ setBackgroundSrc, setBackgroundSize }: BackgroundU
           image.src = reader.result as string;
           image.onload = () => {
             const { width, height } = image;
+            if (!(width === 1300 && height === 600))
+              return alert('이미지 크기는 1300px * 600px 이어야 합니다.');
             setBackgroundSize({ width, height });
             setBackgroundSrc(reader.result as string);
           };
