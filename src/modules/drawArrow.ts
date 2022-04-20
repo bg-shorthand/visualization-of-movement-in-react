@@ -13,8 +13,8 @@ export function drawArrow(
   const dy = y1 - y0;
   const angle = Math.atan2(dy, dx);
   const length = Math.sqrt(dx * dx + dy * dy);
-  const arrowWholeLength = 45;
-  const arrowGap = 35;
+  const arrowWholeLength = 5;
+  const arrowGap = 65;
   const arcLength = arrowGap + 50;
   const curveAlgle = 30;
 
@@ -30,8 +30,9 @@ export function drawArrow(
 
     // Line
     ctx.beginPath();
-    ctx.strokeStyle = secondary ? 'white' : 'blue';
-    ctx.fillStyle = secondary ? 'white' : 'blue';
+    // ctx.clearRect(0, 0, 1300, 600);
+    ctx.strokeStyle = secondary ? 'red' : 'blue';
+    ctx.fillStyle = secondary ? 'red' : 'blue';
     ctx.moveTo(arrowWholeLength, arrowGap);
     ctx.bezierCurveTo(
       length / 2 - curveAlgle,

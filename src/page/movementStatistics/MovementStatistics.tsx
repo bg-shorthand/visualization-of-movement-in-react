@@ -1,6 +1,6 @@
 import { mockData } from 'assets/mockData';
-// import storeImg from 'assets/jdc-stores-sample.png';
-import storeImg from 'assets/store-sample-img.png';
+import storeImg from 'assets/jdc-stores-sample.png';
+// import storeImg from 'assets/store-sample-img.png';
 import { drawArrow } from 'modules/drawArrow';
 import { selectSize } from 'modules/selectSize';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
@@ -16,6 +16,7 @@ const MovementStatistics = () => {
 
   const setSelectedStoresHandler: MouseEventHandler<HTMLLIElement> = (e) => {
     const { id } = e.currentTarget;
+
     const matchStore = stores.find((store) => store.name === id);
     if (!(id && matchStore)) return;
     if (selectedStores.find((store) => store.name === matchStore.name)) {
@@ -38,10 +39,12 @@ const MovementStatistics = () => {
 
     img.onload = () => {
       const maxSize = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
-      const { width, height } = img;
-      setCanvasSize({ width, height });
-      ctx.drawImage(img, 0, 0);
-      // ctx.drawImage(img, 0, 0, 1300, 600);
+      // const { width, height } = img;
+      // ctx.drawImage(img, 0, 0);
+      ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height);
+      setCanvasSize({ width: 1300, height: 600 });
+      ctx.drawImage(img, 0, 0, canvasSize.width, canvasSize.height);
+
       if (selectedStores.length === 1) {
         stores.forEach((store) => {
           if (store.name === selectedStores[0].name) return;
@@ -100,11 +103,15 @@ const MovementStatistics = () => {
     };
 
     img.src = storeImg;
-  }, [selectedStores, stores]);
+  }, [selectedStores, stores, canvasSize]);
 
   return (
     <div className={styles.canvasWrapper}>
-      <canvas ref={canvasRef} width={canvasSize.width} height={canvasSize.height}></canvas>
+      <canvas
+        ref={canvasRef}
+        width={canvasSize.width + 30} // 화살표가 밖으로 나가서 임시로 값 추가
+        height={canvasSize.height}
+      ></canvas>
       <ul>
         {stores.map((store) => {
           return (
