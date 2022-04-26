@@ -39,11 +39,10 @@ const MovementStatistics = () => {
 
     img.onload = () => {
       const maxSize = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
-      // const { width, height } = img;
-      // ctx.drawImage(img, 0, 0);
       ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height);
-      setCanvasSize({ width: 1300, height: 600 });
-      ctx.drawImage(img, 0, 0, canvasSize.width, canvasSize.height);
+      const { width, height } = img;
+      setCanvasSize({ width, height });
+      ctx.drawImage(img, 0, 0);
 
       if (selectedStores.length === 1) {
         stores.forEach((store) => {
@@ -54,6 +53,7 @@ const MovementStatistics = () => {
           const come = store.movement[selectedStore.name as keyof typeof store.movement];
 
           drawArrow(
+            canvas,
             ctx,
             selectedStores[0].coodinate[0],
             selectedStores[0].coodinate[1],
@@ -62,6 +62,7 @@ const MovementStatistics = () => {
             selectSize(leave!, maxSize)
           );
           drawArrow(
+            canvas,
             ctx,
             store.coodinate[0],
             store.coodinate[1],
@@ -81,6 +82,7 @@ const MovementStatistics = () => {
             const come = secondStore.movement[firstStore.name as keyof typeof secondStore.movement];
 
             drawArrow(
+              canvas,
               ctx,
               firstStore.coodinate[0],
               firstStore.coodinate[1],
@@ -89,6 +91,7 @@ const MovementStatistics = () => {
               selectSize(leave!, maxSize)
             );
             drawArrow(
+              canvas,
               ctx,
               secondStore.coodinate[0],
               secondStore.coodinate[1],
@@ -103,7 +106,7 @@ const MovementStatistics = () => {
     };
 
     img.src = storeImg;
-  }, [selectedStores, stores, canvasSize]);
+  }, [selectedStores, stores]);
 
   return (
     <div className={styles.canvasWrapper}>
