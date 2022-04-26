@@ -1,6 +1,7 @@
 import { ARROW_SIZE } from 'const/const';
 
 export function drawArrow(
+  canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   x0: number, // 시작점 x
   y0: number, // 시작점 y
@@ -13,17 +14,44 @@ export function drawArrow(
   const dy = y1 - y0;
   const angle = Math.atan2(dy, dx);
   const length = Math.sqrt(dx * dx + dy * dy);
-  const arrowWholeLength = 5;
-  const arrowGap = 65;
-  const arcLength = arrowGap + 50;
-  const curveAlgle = 30;
+  const arrowGap = 60;
+  const borderArrowAddGap = 2;
 
-  const { aWidth, aLength, lineWidth } = ARROW_SIZE[size];
+  const { aLength, lineWidth } = ARROW_SIZE[size];
   // aWidth: number, // 화살촉이 선에서 수직으로 연장되는 거리
   // aLength: number, // 화살 날개의 길이
   // lineWidth: number, // 선의 전체 굵기
 
   if (ctx) {
+    // border arrow
+    ctx.lineWidth = lineWidth + 4;
+    ctx.translate(x0, y0);
+    ctx.rotate(angle);
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'black';
+    ctx.fillStyle = 'black';
+
+    const backgroundLine = new Path2D();
+    backgroundLine.arc(
+      length / 2 - lineWidth / 4,
+      (length / 2) * Math.sqrt(3) - arrowGap,
+      length,
+      (Math.PI / 180) * (240 - 0.1),
+      (Math.PI / 180) * (300 - 0.1),
+      false
+    );
+    ctx.stroke(backgroundLine);
+
+    ctx.beginPath();
+    ctx.moveTo(length, lineWidth / 2 - arrowGap + borderArrowAddGap);
+    ctx.lineTo(length - aLength - borderArrowAddGap, lineWidth / 2 - arrowGap + borderArrowAddGap);
+    ctx.lineTo(length, lineWidth / 2 - aLength - arrowGap - borderArrowAddGap);
+    ctx.lineTo(length + borderArrowAddGap, lineWidth / 2 - arrowGap);
+    ctx.fill();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    // color arrow
     ctx.lineWidth = lineWidth;
     ctx.translate(x0, y0);
     ctx.rotate(angle);
@@ -33,26 +61,63 @@ export function drawArrow(
     // ctx.clearRect(0, 0, 1300, 600);
     ctx.strokeStyle = secondary ? 'red' : 'blue';
     ctx.fillStyle = secondary ? 'red' : 'blue';
-    ctx.moveTo(arrowWholeLength, arrowGap);
-    ctx.bezierCurveTo(
-      length / 2 - curveAlgle,
-      arcLength,
-      length / 2 + curveAlgle,
-      arcLength,
-      length - arrowWholeLength,
-      arrowGap
+
+    const arrowLine = new Path2D();
+    arrowLine.arc(
+      length / 2 - lineWidth / 4,
+      (length / 2) * Math.sqrt(3) - arrowGap,
+      length,
+      (Math.PI / 180) * 240,
+      (Math.PI / 180) * 300,
+      false
     );
+    console.log(arrowLine);
+    // canvas.addEventListener('mousemove', function (event) {
+    //   if (ctx.isPointInStroke(arrowLine, event.offsetX, event.offsetY)) {
+    //     console.log('true');
+
+    //     ctx.strokeStyle = secondary ? 'red' : 'blue';
+    //     ctx.fillStyle = secondary ? 'red' : 'blue';
+    //   } else {
+    //     console.log('false');
+    //     ctx.strokeStyle = secondary ? 'red' : 'blue';
+    //     ctx.fillStyle = secondary ? 'red' : 'blue';
+    //   }
+    // });
+
+    ctx.stroke(arrowLine);
 
     // Arrow Header
-    ctx.stroke();
-    ctx.translate(length - arrowWholeLength + 3, -aWidth + arrowGap);
-    ctx.rotate((Math.PI / 180) * 120);
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(aLength, aWidth);
-    ctx.lineTo(aLength, -aWidth);
+    ctx.moveTo(length, lineWidth / 2 - arrowGap);
+    ctx.lineTo(length - aLength, lineWidth / 2 - arrowGap);
+    ctx.lineTo(length, lineWidth / 2 - aLength - arrowGap);
+    ctx.lineTo(length, lineWidth / 2 - arrowGap);
     ctx.fill();
+    // ctx.stroke();
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
+
+// bezierCurveTo 메서드 사용
+// const arrowWholeLength = 5;
+// const arcLength = arrowGap + 50;
+// const curveAngle = 30;
+
+// ctx.moveTo(arrowWholeLength, arrowGap);
+// ctx.bezierCurveTo(
+//   length / 2 - curveAngle,
+//   length / 2 + curveAngle,
+//   arcLength,
+//   length - arrowWholeLength,
+//   arcLength,
+//   arrowGap
+// );
+
+// ctx.translate(length - arrowWholeLength + 3, -aWidth + arrowGap);
+// ctx.rotate((Math.PI / 180) * 120);
+// ctx.beginPath();
+// ctx.moveTo(0, 0);
+// ctx.lineTo(aLength, aWidth);
+// ctx.lineTo(aLength, -aWidth);
