@@ -61,6 +61,7 @@ const MovementStatistics = () => {
       const { width, height } = img;
       setCanvasSize({ width, height });
       ctx.drawImage(img, 0, 100);
+      setLines([]);
 
       if (selectedStores.length === 1) {
         stores.forEach((store, i) => {
