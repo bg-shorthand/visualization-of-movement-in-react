@@ -56,7 +56,6 @@ export function drawArrow(
     ctx.rotate(angle);
 
     // Line
-    ctx.beginPath();
     // ctx.clearRect(0, 0, 1300, 600);
     ctx.strokeStyle = secondary ? 'red' : 'blue';
     ctx.fillStyle = secondary ? 'red' : 'blue';

@@ -3,12 +3,12 @@ export const mockData = {
   store: [
     {
       name: '만다리나덕',
-      coodinate: [115, 130],
+      coodinate: [115, 230],
       movement: {
-        베트리나: 352,
+        베트리나: 369,
         쌤소나이트: 468,
         헤지스: 159,
-        컨티뉴: 781,
+        컨티뉴: 536,
         쿠론: 438,
         키플링: 765,
         이치: 469,
@@ -20,12 +20,12 @@ export const mockData = {
     },
     {
       name: '베트리나',
-      coodinate: [320, 130],
+      coodinate: [320, 230],
       movement: {
         만다리나덕: 352,
         쌤소나이트: 468,
         헤지스: 159,
-        컨티뉴: 781,
+        컨티뉴: 974,
         쿠론: 438,
         키플링: 765,
         이치: 469,
@@ -37,12 +37,12 @@ export const mockData = {
     },
     {
       name: '쌤소나이트',
-      coodinate: [525, 130],
+      coodinate: [525, 230],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
         헤지스: 159,
-        컨티뉴: 781,
+        컨티뉴: 197,
         쿠론: 438,
         키플링: 765,
         이치: 469,
@@ -54,12 +54,12 @@ export const mockData = {
     },
     {
       name: '헤지스',
-      coodinate: [785, 130],
+      coodinate: [785, 230],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
         쌤소나이트: 159,
-        컨티뉴: 781,
+        컨티뉴: 879,
         쿠론: 438,
         키플링: 765,
         이치: 469,
@@ -71,7 +71,7 @@ export const mockData = {
     },
     {
       name: '컨티뉴',
-      coodinate: [995, 130],
+      coodinate: [995, 230],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -88,7 +88,7 @@ export const mockData = {
     },
     {
       name: '쿠론',
-      coodinate: [1200, 130],
+      coodinate: [1200, 230],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -105,7 +105,7 @@ export const mockData = {
     },
     {
       name: '키플링',
-      coodinate: [115, 415],
+      coodinate: [115, 515],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -122,7 +122,7 @@ export const mockData = {
     },
     {
       name: '이치',
-      coodinate: [320, 415],
+      coodinate: [320, 515],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -139,7 +139,7 @@ export const mockData = {
     },
     {
       name: '캉골',
-      coodinate: [525, 415],
+      coodinate: [525, 515],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -156,7 +156,7 @@ export const mockData = {
     },
     {
       name: '제이에스티나',
-      coodinate: [785, 415],
+      coodinate: [785, 515],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -173,7 +173,7 @@ export const mockData = {
     },
     {
       name: '로즈앤라운지',
-      coodinate: [995, 415],
+      coodinate: [995, 515],
       movement: {
         만다리나덕: 352,
         베트리나: 468,
@@ -190,7 +190,7 @@ export const mockData = {
     },
     {
       name: '조이그라이슨',
-      coodinate: [1200, 415],
+      coodinate: [1200, 515],
       movement: {
         만다리나덕: 352,
         베트리나: 468,

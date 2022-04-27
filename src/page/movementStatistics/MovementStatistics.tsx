@@ -55,15 +55,16 @@ const MovementStatistics = () => {
     const img = new Image();
 
     img.onload = () => {
+      // ctx.translate(100, 100);
       const maxSize = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
-      ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height);
+      ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height + 130);
       const { width, height } = img;
       setCanvasSize({ width, height });
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 100);
       setLines([]);
 
       if (selectedStores.length === 1) {
-        stores.forEach((store) => {
+        stores.forEach((store, i) => {
           if (store.name === selectedStores[0].name) return;
           const [selectedStore] = selectedStores;
 
@@ -114,7 +115,6 @@ const MovementStatistics = () => {
         renderStores.forEach((firstStore, i) => {
           renderStores.forEach((secondStore, j) => {
             if (i <= j) return;
-
             const leave = firstStore.movement[secondStore.name as keyof typeof firstStore.movement];
             const come = secondStore.movement[firstStore.name as keyof typeof secondStore.movement];
 
@@ -160,7 +160,6 @@ const MovementStatistics = () => {
         });
       }
     };
-
     img.src = storeImg;
   }, [selectedStores, stores]);
 
@@ -194,12 +193,13 @@ const MovementStatistics = () => {
   return (
     <div className={styles.canvasWrapper}>
       <canvas
+        id="canvas"
         ref={canvasRef}
         width={canvasSize.width + 30} // 화살표가 밖으로 나가서 임시로 값 추가
-        height={canvasSize.height}
+        height={canvasSize.height + 130} // 화살표가 밖으로 나가서 임시로 값 추가
       ></canvas>
       <ul>
-        {stores.map((store) => {
+        {stores.map((store, i) => {
           return (
             <li
               id={store.name}
@@ -210,7 +210,10 @@ const MovementStatistics = () => {
               }
               key={store.name}
               onClick={setSelectedStoresHandler}
-              style={{ left: `${store.coodinate[0] - 50}px`, top: `${store.coodinate[1] - 50}px` }}
+              style={{
+                left: `${store.coodinate[0] - 50}px`,
+                top: `${store.coodinate[1] - 50}px`,
+              }}
             >
               {store.name}
             </li>
