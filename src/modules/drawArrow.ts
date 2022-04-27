@@ -32,8 +32,7 @@ export function drawArrow(
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
 
-    const backgroundLine = new Path2D();
-    backgroundLine.arc(
+    ctx.arc(
       length / 2 - lineWidth / 4,
       (length / 2) * Math.sqrt(3) - arrowGap,
       length,
@@ -41,7 +40,7 @@ export function drawArrow(
       (Math.PI / 180) * (300 - 0.1),
       false
     );
-    ctx.stroke(backgroundLine);
+    ctx.stroke();
 
     ctx.beginPath();
     ctx.moveTo(length, lineWidth / 2 - arrowGap + borderArrowAddGap);
@@ -61,8 +60,8 @@ export function drawArrow(
     ctx.strokeStyle = secondary ? 'red' : 'blue';
     ctx.fillStyle = secondary ? 'red' : 'blue';
 
-    const arrowLine = new Path2D();
-    arrowLine.arc(
+    const line = new Path2D();
+    line.arc(
       length / 2 - lineWidth / 4,
       (length / 2) * Math.sqrt(3) - arrowGap,
       length,
@@ -70,7 +69,7 @@ export function drawArrow(
       (Math.PI / 180) * 300,
       false
     );
-    ctx.stroke(arrowLine);
+    ctx.stroke(line);
 
     // Arrow Header
     ctx.beginPath();
@@ -79,8 +78,8 @@ export function drawArrow(
     ctx.lineTo(length, lineWidth / 2 - aLength - arrowGap);
     ctx.lineTo(length, lineWidth / 2 - arrowGap);
     ctx.fill();
-    // ctx.stroke();
-
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    return { angle, translate: [x0, y0], lineWidth, path: line };
   }
 }
