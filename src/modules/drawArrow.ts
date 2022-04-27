@@ -57,7 +57,6 @@ export function drawArrow(
     ctx.rotate(angle);
 
     // Line
-    ctx.beginPath();
     // ctx.clearRect(0, 0, 1300, 600);
     ctx.strokeStyle = secondary ? 'red' : 'blue';
     ctx.fillStyle = secondary ? 'red' : 'blue';
@@ -71,20 +70,6 @@ export function drawArrow(
       (Math.PI / 180) * 300,
       false
     );
-    console.log(arrowLine);
-    // canvas.addEventListener('mousemove', function (event) {
-    //   if (ctx.isPointInStroke(arrowLine, event.offsetX, event.offsetY)) {
-    //     console.log('true');
-
-    //     ctx.strokeStyle = secondary ? 'red' : 'blue';
-    //     ctx.fillStyle = secondary ? 'red' : 'blue';
-    //   } else {
-    //     console.log('false');
-    //     ctx.strokeStyle = secondary ? 'red' : 'blue';
-    //     ctx.fillStyle = secondary ? 'red' : 'blue';
-    //   }
-    // });
-
     ctx.stroke(arrowLine);
 
     // Arrow Header
@@ -99,25 +84,3 @@ export function drawArrow(
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
-
-// bezierCurveTo 메서드 사용
-// const arrowWholeLength = 5;
-// const arcLength = arrowGap + 50;
-// const curveAngle = 30;
-
-// ctx.moveTo(arrowWholeLength, arrowGap);
-// ctx.bezierCurveTo(
-//   length / 2 - curveAngle,
-//   length / 2 + curveAngle,
-//   arcLength,
-//   length - arrowWholeLength,
-//   arcLength,
-//   arrowGap
-// );
-
-// ctx.translate(length - arrowWholeLength + 3, -aWidth + arrowGap);
-// ctx.rotate((Math.PI / 180) * 120);
-// ctx.beginPath();
-// ctx.moveTo(0, 0);
-// ctx.lineTo(aLength, aWidth);
-// ctx.lineTo(aLength, -aWidth);
