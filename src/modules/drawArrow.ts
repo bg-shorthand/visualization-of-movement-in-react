@@ -32,8 +32,7 @@ export function drawArrow(
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
 
-    const backgroundLine = new Path2D();
-    backgroundLine.arc(
+    ctx.arc(
       length / 2 - lineWidth / 4,
       (length / 2) * Math.sqrt(3) - arrowGap,
       length,
@@ -41,7 +40,7 @@ export function drawArrow(
       (Math.PI / 180) * (300 - 0.1),
       false
     );
-    ctx.stroke(backgroundLine);
+    ctx.stroke();
 
     ctx.beginPath();
     ctx.moveTo(length, lineWidth / 2 - arrowGap + borderArrowAddGap);
@@ -62,8 +61,8 @@ export function drawArrow(
     ctx.strokeStyle = secondary ? 'red' : 'blue';
     ctx.fillStyle = secondary ? 'red' : 'blue';
 
-    const arrowLine = new Path2D();
-    arrowLine.arc(
+    const line = new Path2D();
+    line.arc(
       length / 2 - lineWidth / 4,
       (length / 2) * Math.sqrt(3) - arrowGap,
       length,
@@ -71,21 +70,7 @@ export function drawArrow(
       (Math.PI / 180) * 300,
       false
     );
-    console.log(arrowLine);
-    // canvas.addEventListener('mousemove', function (event) {
-    //   if (ctx.isPointInStroke(arrowLine, event.offsetX, event.offsetY)) {
-    //     console.log('true');
-
-    //     ctx.strokeStyle = secondary ? 'red' : 'blue';
-    //     ctx.fillStyle = secondary ? 'red' : 'blue';
-    //   } else {
-    //     console.log('false');
-    //     ctx.strokeStyle = secondary ? 'red' : 'blue';
-    //     ctx.fillStyle = secondary ? 'red' : 'blue';
-    //   }
-    // });
-
-    ctx.stroke(arrowLine);
+    ctx.stroke(line);
 
     // Arrow Header
     ctx.beginPath();
@@ -94,30 +79,8 @@ export function drawArrow(
     ctx.lineTo(length, lineWidth / 2 - aLength - arrowGap);
     ctx.lineTo(length, lineWidth / 2 - arrowGap);
     ctx.fill();
-    // ctx.stroke();
-
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    return { angle, translate: [x0, y0], lineWidth, path: line };
   }
 }
-
-// bezierCurveTo 메서드 사용
-// const arrowWholeLength = 5;
-// const arcLength = arrowGap + 50;
-// const curveAngle = 30;
-
-// ctx.moveTo(arrowWholeLength, arrowGap);
-// ctx.bezierCurveTo(
-//   length / 2 - curveAngle,
-//   length / 2 + curveAngle,
-//   arcLength,
-//   length - arrowWholeLength,
-//   arcLength,
-//   arrowGap
-// );
-
-// ctx.translate(length - arrowWholeLength + 3, -aWidth + arrowGap);
-// ctx.rotate((Math.PI / 180) * 120);
-// ctx.beginPath();
-// ctx.moveTo(0, 0);
-// ctx.lineTo(aLength, aWidth);
-// ctx.lineTo(aLength, -aWidth);

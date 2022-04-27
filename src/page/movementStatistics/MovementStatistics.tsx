@@ -14,6 +14,23 @@ const MovementStatistics = () => {
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [selectedStores, setSelectedStores] = useState<typeof stores>([]);
 
+  const [lines, setLines] = useState<
+    {
+      startStore: string;
+      endStore: string;
+      path: { angle: number; translate: number[]; lineWidth: number; path: Path2D };
+      movement: number;
+    }[]
+  >([]);
+  const [renderData, setRenderData] = useState({
+    startStore: '',
+    endStore: '',
+    movement: 0,
+    x: 0,
+    y: 0,
+  });
+  const [displayMovement, setDisplayMovement] = useState(false);
+
   const setSelectedStoresHandler: MouseEventHandler<HTMLLIElement> = (e) => {
     const { id } = e.currentTarget;
 
@@ -43,6 +60,7 @@ const MovementStatistics = () => {
       const { width, height } = img;
       setCanvasSize({ width, height });
       ctx.drawImage(img, 0, 0);
+      setLines([]);
 
       if (selectedStores.length === 1) {
         stores.forEach((store) => {
@@ -52,7 +70,7 @@ const MovementStatistics = () => {
           const leave = selectedStore.movement[store.name as keyof typeof selectedStore.movement];
           const come = store.movement[selectedStore.name as keyof typeof store.movement];
 
-          drawArrow(
+          const leavePath = drawArrow(
             canvas,
             ctx,
             selectedStores[0].coodinate[0],
@@ -61,7 +79,7 @@ const MovementStatistics = () => {
             store.coodinate[1],
             selectSize(leave!, maxSize)
           );
-          drawArrow(
+          const comePath = drawArrow(
             canvas,
             ctx,
             store.coodinate[0],
@@ -71,6 +89,25 @@ const MovementStatistics = () => {
             selectSize(come!, maxSize),
             false
           );
+
+          setLines((pre) => [
+            ...pre,
+            {
+              startStore: selectedStore.name,
+              endStore: store.name,
+              movement: leave!,
+              path: leavePath!,
+            },
+          ]);
+          setLines((pre) => [
+            ...pre,
+            {
+              startStore: store.name,
+              endStore: selectedStore.name,
+              movement: come!,
+              path: comePath!,
+            },
+          ]);
         });
       } else {
         const renderStores = selectedStores.length ? selectedStores : stores;
@@ -81,7 +118,7 @@ const MovementStatistics = () => {
             const leave = firstStore.movement[secondStore.name as keyof typeof firstStore.movement];
             const come = secondStore.movement[firstStore.name as keyof typeof secondStore.movement];
 
-            drawArrow(
+            const leavePath = drawArrow(
               canvas,
               ctx,
               firstStore.coodinate[0],
@@ -90,7 +127,7 @@ const MovementStatistics = () => {
               secondStore.coodinate[1],
               selectSize(leave!, maxSize)
             );
-            drawArrow(
+            const comePath = drawArrow(
               canvas,
               ctx,
               secondStore.coodinate[0],
@@ -100,6 +137,25 @@ const MovementStatistics = () => {
               selectSize(come!, maxSize),
               false
             );
+
+            setLines((pre) => [
+              ...pre,
+              {
+                startStore: firstStore.name,
+                endStore: secondStore.name,
+                movement: leave!,
+                path: leavePath!,
+              },
+            ]);
+            setLines((pre) => [
+              ...pre,
+              {
+                startStore: secondStore.name,
+                endStore: firstStore.name,
+                movement: come!,
+                path: comePath!,
+              },
+            ]);
           });
         });
       }
@@ -107,6 +163,33 @@ const MovementStatistics = () => {
 
     img.src = storeImg;
   }, [selectedStores, stores]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
+
+    canvas.onmousemove = ({ offsetX, offsetY }) => {
+      for (let i = 0; i < lines.length; i++) {
+        ctx.save();
+
+        ctx.lineWidth = lines[i].path.lineWidth;
+        ctx.translate(lines[i].path.translate[0], lines[i].path.translate[1]);
+        ctx.rotate(lines[i].path.angle);
+
+        if (ctx.isPointInStroke(lines[i].path.path, offsetX, offsetY)) {
+          const { startStore, endStore, movement } = lines[i];
+          setRenderData({ startStore, endStore, movement, x: offsetX, y: offsetY });
+          setDisplayMovement(true);
+          return ctx.restore();
+        } else {
+          setDisplayMovement(false);
+        }
+
+        ctx.restore();
+      }
+    };
+  }, [lines]);
 
   return (
     <div className={styles.canvasWrapper}>
@@ -135,6 +218,18 @@ const MovementStatistics = () => {
         })}
       </ul>
       <button onClick={selectedStoresResetHandler}>RESET</button>
+      <div
+        style={{
+          position: 'absolute',
+          top: renderData.y + 10 + 'px',
+          left: renderData.x + 10 + 'px',
+          backgroundColor: 'black',
+          color: 'white',
+          display: displayMovement ? 'block' : 'none',
+        }}
+      >
+        {renderData.startStore + ' / ' + renderData.endStore + '/' + renderData.movement}
+      </div>
     </div>
   );
 };
