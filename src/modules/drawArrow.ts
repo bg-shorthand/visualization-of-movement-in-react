@@ -18,7 +18,6 @@ export function drawArrow(
   const borderArrowAddGap = 2;
 
   const { aLength, lineWidth } = ARROW_SIZE[size];
-  // aWidth: number, // 화살촉이 선에서 수직으로 연장되는 거리
   // aLength: number, // 화살 날개의 길이
   // lineWidth: number, // 선의 전체 굵기
 
@@ -57,8 +56,8 @@ export function drawArrow(
 
     // Line
     // ctx.clearRect(0, 0, 1300, 600);
-    ctx.strokeStyle = secondary ? 'red' : 'blue';
-    ctx.fillStyle = secondary ? 'red' : 'blue';
+    ctx.strokeStyle = secondary ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)';
+    ctx.fillStyle = secondary ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)';
 
     const line = new Path2D();
     line.arc(
