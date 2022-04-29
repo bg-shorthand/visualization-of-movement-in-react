@@ -1,19 +1,18 @@
 import { mockData } from 'assets/mockData';
 import storeImg from 'assets/jdc-stores-sample.png';
-// import storeImg from 'assets/store-sample-img.png';
 import { drawArrow } from 'modules/drawArrow';
-import { selectSize } from 'modules/selectSize';
+import { arrowSize, marketSize } from 'modules/movementSize';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import styles from './MovementStatistics.module.scss';
 
 const MovementStatistics = () => {
   const stores = mockData.store;
+  const maxTotalMovement = Math.max(...stores.map((store) => store.total).flat());
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [selectedStores, setSelectedStores] = useState<typeof stores>([]);
-
   const [lines, setLines] = useState<
     {
       startStore: string;
@@ -55,8 +54,8 @@ const MovementStatistics = () => {
     const img = new Image();
 
     img.onload = () => {
-      // ctx.translate(100, 100);
-      const maxSize = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
+      const maxPersonalMovement = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
+
       ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height + 130);
       const { width, height } = img;
       setCanvasSize({ width, height });
@@ -78,7 +77,7 @@ const MovementStatistics = () => {
             selectedStores[0].coodinate[1],
             store.coodinate[0],
             store.coodinate[1],
-            selectSize(leave!, maxSize)
+            arrowSize(leave!, maxPersonalMovement)
           );
           const comePath = drawArrow(
             canvas,
@@ -87,7 +86,7 @@ const MovementStatistics = () => {
             store.coodinate[1],
             selectedStores[0].coodinate[0],
             selectedStores[0].coodinate[1],
-            selectSize(come!, maxSize),
+            arrowSize(come!, maxPersonalMovement),
             false
           );
 
@@ -125,7 +124,7 @@ const MovementStatistics = () => {
               firstStore.coodinate[1],
               secondStore.coodinate[0],
               secondStore.coodinate[1],
-              selectSize(leave!, maxSize)
+              arrowSize(leave!, maxPersonalMovement)
             );
             const comePath = drawArrow(
               canvas,
@@ -134,7 +133,7 @@ const MovementStatistics = () => {
               secondStore.coodinate[1],
               firstStore.coodinate[0],
               firstStore.coodinate[1],
-              selectSize(come!, maxSize),
+              arrowSize(come!, maxPersonalMovement),
               false
             );
 
@@ -199,7 +198,9 @@ const MovementStatistics = () => {
         height={canvasSize.height + 130} // 화살표가 밖으로 나가서 임시로 값 추가
       ></canvas>
       <ul>
-        {stores.map((store, i) => {
+        {stores.map((store) => {
+          const { storeSize, halfStoreSize } = marketSize(store.total, maxTotalMovement);
+
           return (
             <li
               id={store.name}
@@ -211,8 +212,12 @@ const MovementStatistics = () => {
               key={store.name}
               onClick={setSelectedStoresHandler}
               style={{
-                left: `${store.coodinate[0] - 50}px`,
-                top: `${store.coodinate[1] - 50}px`,
+                left: `${store.coodinate[0] - halfStoreSize}px`,
+                top: `${store.coodinate[1] - halfStoreSize}px`,
+                width: storeSize,
+                height: storeSize,
+                // width: `${marketCircleSize}px`,
+                // height: `${marketCircleSize}px`,
               }}
             >
               {store.name}
@@ -231,7 +236,7 @@ const MovementStatistics = () => {
           display: displayMovement ? 'block' : 'none',
         }}
       >
-        {renderData.startStore + ' / ' + renderData.endStore + '/' + renderData.movement}
+        {renderData.startStore + ' -> ' + renderData.endStore + '/' + renderData.movement}
       </div>
     </div>
   );

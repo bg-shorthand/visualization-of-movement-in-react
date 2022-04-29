@@ -17,6 +17,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 3564,
     },
     {
       name: '베트리나',
@@ -34,6 +35,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 5564,
     },
     {
       name: '쌤소나이트',
@@ -51,6 +53,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 4654,
     },
     {
       name: '헤지스',
@@ -68,6 +71,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 6416,
     },
     {
       name: '컨티뉴',
@@ -85,6 +89,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 954,
     },
     {
       name: '쿠론',
@@ -102,6 +107,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 5416,
     },
     {
       name: '키플링',
@@ -119,6 +125,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 2941,
     },
     {
       name: '이치',
@@ -136,6 +143,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 5841,
     },
     {
       name: '캉골',
@@ -153,6 +161,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 2831,
     },
     {
       name: '제이에스티나',
@@ -170,6 +179,7 @@ export const mockData = {
         로즈앤라운지: 733,
         조이그라이슨: 268,
       },
+      total: 6546,
     },
     {
       name: '로즈앤라운지',
@@ -187,6 +197,7 @@ export const mockData = {
         제이에스티나: 733,
         조이그라이슨: 268,
       },
+      total: 6568,
     },
     {
       name: '조이그라이슨',
@@ -204,6 +215,7 @@ export const mockData = {
         제이에스티나: 733,
         로즈앤라운지: 268,
       },
+      total: 854,
     },
   ],
 };
