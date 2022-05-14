@@ -1,13 +1,14 @@
 import { mockData } from 'assets/mockData';
-import storeImg from 'assets/jdc-stores-sample.png';
 import { drawArrow } from 'modules/drawArrow';
 import { arrowSize, marketSize } from 'modules/movementSize';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import styles from './MovementStatistics.module.scss';
 
 const MovementStatistics = () => {
+  const IMAGE_URL = 'http://3.36.33.116/assets/jdc-stores-sample.png';
   const stores = mockData.store;
   const maxTotalMovement = Math.max(...stores.map((store) => store.total).flat());
+  const maxPersonalMovement = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -54,8 +55,6 @@ const MovementStatistics = () => {
     const img = new Image();
 
     img.onload = () => {
-      const maxPersonalMovement = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
-
       ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height + 130);
       const { width, height } = img;
       setCanvasSize({ width, height });
@@ -63,31 +62,50 @@ const MovementStatistics = () => {
       setLines([]);
 
       if (selectedStores.length === 1) {
-        stores.forEach((store, i) => {
+        console.log('start');
+        stores.forEach((store) => {
           if (store.name === selectedStores[0].name) return;
           const [selectedStore] = selectedStores;
 
           const leave = selectedStore.movement[store.name as keyof typeof selectedStore.movement];
           const come = store.movement[selectedStore.name as keyof typeof store.movement];
+          const { aLength: leaveALength, lineWidth: leaveLineWidth } = arrowSize(
+            leave!,
+            maxPersonalMovement
+          );
+          const { aLength: comeALength, lineWidth: comeLineWidth } = arrowSize(
+            come!,
+            maxPersonalMovement
+          );
+          const { halfStoreSize: firstHalfStoreSize } = marketSize(
+            selectedStores[0].total,
+            maxTotalMovement
+          );
+          const { halfStoreSize: secondHalfStoreSize } = marketSize(store.total, maxTotalMovement);
 
           const leavePath = drawArrow(
-            canvas,
             ctx,
             selectedStores[0].coodinate[0],
             selectedStores[0].coodinate[1],
             store.coodinate[0],
             store.coodinate[1],
-            arrowSize(leave!, maxPersonalMovement)
+            leaveALength,
+            leaveLineWidth,
+            firstHalfStoreSize,
+            true,
+            secondHalfStoreSize
           );
           const comePath = drawArrow(
-            canvas,
             ctx,
             store.coodinate[0],
             store.coodinate[1],
             selectedStores[0].coodinate[0],
             selectedStores[0].coodinate[1],
-            arrowSize(come!, maxPersonalMovement),
-            false
+            comeALength,
+            comeLineWidth,
+            firstHalfStoreSize,
+            false,
+            secondHalfStoreSize
           );
 
           setLines((pre) => [
@@ -109,32 +127,55 @@ const MovementStatistics = () => {
             },
           ]);
         });
+        console.log('end');
       } else {
-        const renderStores = selectedStores.length ? selectedStores : stores;
+        console.log('markets start');
+        const renderStores = selectedStores.length ? selectedStores.reverse() : stores;
         renderStores.forEach((firstStore, i) => {
           renderStores.forEach((secondStore, j) => {
             if (i <= j) return;
             const leave = firstStore.movement[secondStore.name as keyof typeof firstStore.movement];
             const come = secondStore.movement[firstStore.name as keyof typeof secondStore.movement];
+            const { aLength: leaveALength, lineWidth: leaveLineWidth } = arrowSize(
+              leave!,
+              maxPersonalMovement
+            );
+            const { aLength: comeALength, lineWidth: comeLineWidth } = arrowSize(
+              come!,
+              maxPersonalMovement
+            );
+            const { halfStoreSize: firstHalfStoreSize } = marketSize(
+              firstStore.total,
+              maxTotalMovement
+            );
+            const { halfStoreSize: secondHalfStoreSize } = marketSize(
+              secondStore.total,
+              maxTotalMovement
+            );
 
             const leavePath = drawArrow(
-              canvas,
               ctx,
               firstStore.coodinate[0],
               firstStore.coodinate[1],
               secondStore.coodinate[0],
               secondStore.coodinate[1],
-              arrowSize(leave!, maxPersonalMovement)
+              leaveALength,
+              leaveLineWidth,
+              firstHalfStoreSize,
+              true,
+              secondHalfStoreSize
             );
             const comePath = drawArrow(
-              canvas,
               ctx,
               secondStore.coodinate[0],
               secondStore.coodinate[1],
               firstStore.coodinate[0],
               firstStore.coodinate[1],
-              arrowSize(come!, maxPersonalMovement),
-              false
+              comeALength,
+              comeLineWidth,
+              firstHalfStoreSize,
+              false,
+              secondHalfStoreSize
             );
 
             setLines((pre) => [
@@ -158,8 +199,9 @@ const MovementStatistics = () => {
           });
         });
       }
+      console.log('markets end');
     };
-    img.src = storeImg;
+    img.src = IMAGE_URL;
   }, [selectedStores, stores]);
 
   useEffect(() => {
@@ -214,10 +256,8 @@ const MovementStatistics = () => {
               style={{
                 left: `${store.coodinate[0] - halfStoreSize}px`,
                 top: `${store.coodinate[1] - halfStoreSize}px`,
-                width: storeSize,
-                height: storeSize,
-                // width: `${marketCircleSize}px`,
-                // height: `${marketCircleSize}px`,
+                width: `${storeSize}px`,
+                height: `${storeSize}px`,
               }}
             >
               {store.name}

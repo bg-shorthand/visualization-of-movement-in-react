@@ -1,26 +1,23 @@
 export const arrowSize = (size: number, maxSize: number) => {
-  const unitSize = maxSize / 5;
-  if (unitSize > size) {
-    return 'xs';
-  } else if (2 * unitSize > size) {
-    return 's';
-  } else if (3 * unitSize > size) {
-    return 'm';
-  } else if (4 * unitSize > size) {
-    return 'l';
-  } else {
-    return 'xl';
-  }
+  const MAX_ARROW_SIZE = 18;
+  const MIN_ARROW_SIZE = 10;
+  const MAX_LINEWIDTH = 10;
+  const MIN_LINEWIDTH = 2;
+
+  const aLength = (MAX_ARROW_SIZE - MIN_ARROW_SIZE) * (size / maxSize) + MIN_ARROW_SIZE;
+  const lineWidth = (MAX_LINEWIDTH - MIN_LINEWIDTH) * (size / maxSize) + MIN_LINEWIDTH;
+
+  return { aLength, lineWidth };
 };
 
 export const marketSize = (movement: number, maxMovement: number) => {
   const MAX_CIRCLE_SIZE = 180;
   const MIN_CIRCLE_SIZE = 90;
 
-  const storeSize = `${
-    (MAX_CIRCLE_SIZE - MIN_CIRCLE_SIZE) * (movement / maxMovement) + MIN_CIRCLE_SIZE
-  }px`;
+  const storeSize =
+    (MAX_CIRCLE_SIZE - MIN_CIRCLE_SIZE) * (movement / maxMovement) + MIN_CIRCLE_SIZE;
   const halfStoreSize =
     ((MAX_CIRCLE_SIZE - MIN_CIRCLE_SIZE) * (movement / maxMovement) + MIN_CIRCLE_SIZE) / 2;
+
   return { storeSize, halfStoreSize };
 };

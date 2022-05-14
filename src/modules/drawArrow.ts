@@ -1,32 +1,31 @@
-import { ARROW_SIZE } from 'const/const';
-
 export function drawArrow(
-  canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   x0: number, // 시작점 x
   y0: number, // 시작점 y
   x1: number, // 끝점 x
   y1: number, // 끝점 y
-  size: 'xs' | 's' | 'm' | 'l' | 'xl',
-  secondary = true
+  aLength: number, // 화살 날개의 길이
+  lineWidth: number, // 선의 전체 굵기
+  firstStoreSize: number,
+  secondary: boolean,
+  secondStoreSize?: number
 ) {
   const dx = x1 - x0;
   const dy = y1 - y0;
   const angle = Math.atan2(dy, dx);
   const length = Math.sqrt(dx * dx + dy * dy);
-  const arrowGap = 60;
+  const arrowGap = firstStoreSize + 10;
+  // const secondArrowGap = secondStoreSize! + 10;
   const borderArrowAddGap = 2;
 
-  const { aLength, lineWidth } = ARROW_SIZE[size];
-  // aLength: number, // 화살 날개의 길이
-  // lineWidth: number, // 선의 전체 굵기
+  console.log(firstStoreSize, secondStoreSize);
 
   if (ctx) {
     // border arrow
     ctx.lineWidth = lineWidth + 4;
+
     ctx.translate(x0, y0);
     ctx.rotate(angle);
-
     ctx.beginPath();
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
