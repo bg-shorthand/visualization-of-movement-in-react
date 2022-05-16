@@ -92,7 +92,6 @@ const MovementStatistics = () => {
             leaveALength,
             leaveLineWidth,
             firstHalfStoreSize,
-            true,
             secondHalfStoreSize
           );
           const comePath = drawArrow(
@@ -103,9 +102,9 @@ const MovementStatistics = () => {
             selectedStores[0].coodinate[1],
             comeALength,
             comeLineWidth,
+            secondHalfStoreSize,
             firstHalfStoreSize,
-            false,
-            secondHalfStoreSize
+            true
           );
 
           setLines((pre) => [
@@ -162,7 +161,6 @@ const MovementStatistics = () => {
               leaveALength,
               leaveLineWidth,
               firstHalfStoreSize,
-              true,
               secondHalfStoreSize
             );
             const comePath = drawArrow(
@@ -173,9 +171,9 @@ const MovementStatistics = () => {
               firstStore.coodinate[1],
               comeALength,
               comeLineWidth,
+              secondHalfStoreSize,
               firstHalfStoreSize,
-              false,
-              secondHalfStoreSize
+              true
             );
 
             setLines((pre) => [

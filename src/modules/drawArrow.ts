@@ -7,18 +7,18 @@ export function drawArrow(
   aLength: number, // 화살 날개의 길이
   lineWidth: number, // 선의 전체 굵기
   firstStoreSize: number,
-  secondary: boolean,
-  secondStoreSize?: number
+  secondStoreSize: number,
+  secondary = false
 ) {
+  const storeGap = secondStoreSize - firstStoreSize;
   const dx = x1 - x0;
   const dy = y1 - y0;
-  const angle = Math.atan2(dy, dx);
+  const angleX = dx === 0 ? (dy >= 0 ? storeGap : -storeGap) : dx;
+  const angleY = dx === 0 ? dy : dx > 0 ? dy - storeGap : dy + storeGap;
+  const angle = Math.atan2(angleY, angleX);
   const length = Math.sqrt(dx * dx + dy * dy);
   const arrowGap = firstStoreSize + 10;
-  // const secondArrowGap = secondStoreSize! + 10;
   const borderArrowAddGap = 2;
-
-  console.log(firstStoreSize, secondStoreSize);
 
   if (ctx) {
     // border arrow
