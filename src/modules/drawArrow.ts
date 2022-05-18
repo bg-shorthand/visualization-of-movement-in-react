@@ -15,7 +15,6 @@ export function drawArrow(
   const dy = y1 - y0;
   const angleX = dx === 0 ? (dy >= 0 ? storeGap : -storeGap) : dx;
   const angleY = dx === 0 ? dy : dx > 0 ? dy - storeGap : dy + storeGap;
-  console.log(dx, angleX, dy, angleY, storeGap);
   const angle = Math.atan2(angleY, angleX);
   const length = Math.sqrt(angleX * angleX + angleY * angleY);
   const arrowGap = firstStoreSize + lineWidth * 2.5;

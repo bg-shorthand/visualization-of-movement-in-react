@@ -1,12 +1,18 @@
-import { mockData } from 'assets/mockData';
+// import { mockData } from 'assets/mockData';
 import { drawArrow } from 'modules/drawArrow';
 import { arrowSize, marketSize } from 'modules/movementSize';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import styles from './MovementStatistics.module.scss';
+import { Stores } from 'const/type';
 
-const MovementStatistics = () => {
-  const IMAGE_URL = 'http://3.36.33.116/assets/jdc-stores-sample.png';
-  const stores = mockData.store;
+interface MovementStatisticsProps {
+  IMAGE_URL: string;
+  stores: Stores;
+}
+
+const MovementStatistics = ({ IMAGE_URL, stores }: MovementStatisticsProps) => {
+  // const IMAGE_URL = 'http://3.36.33.116/assets/jdc-stores-sample.png';
+  // const stores = mockData.store;
   const maxTotalMovement = Math.max(...stores.map((store) => store.total).flat());
   const maxPersonalMovement = Math.max(...stores.map((v) => Object.values(v.movement)).flat());
 
@@ -55,14 +61,13 @@ const MovementStatistics = () => {
     const img = new Image();
 
     img.onload = () => {
-      ctx.clearRect(0, 0, canvasSize.width + 30, canvasSize.height + 130);
+      ctx.clearRect(0, 0, canvasSize.width + 100, canvasSize.height + 200);
       const { width, height } = img;
       setCanvasSize({ width, height });
-      ctx.drawImage(img, 0, 100);
+      ctx.drawImage(img, 30, 130);
       setLines([]);
 
       if (selectedStores.length === 1) {
-        console.log('start');
         stores.forEach((store) => {
           if (store.name === selectedStores[0].name) return;
           const [selectedStore] = selectedStores;
@@ -126,9 +131,7 @@ const MovementStatistics = () => {
             },
           ]);
         });
-        console.log('end');
       } else {
-        console.log('markets start');
         const renderStores = selectedStores.length ? selectedStores.reverse() : stores;
         renderStores.forEach((firstStore, i) => {
           renderStores.forEach((secondStore, j) => {
@@ -197,7 +200,6 @@ const MovementStatistics = () => {
           });
         });
       }
-      console.log('markets end');
     };
     img.src = IMAGE_URL;
   }, [selectedStores, stores]);
@@ -230,53 +232,55 @@ const MovementStatistics = () => {
   }, [lines]);
 
   return (
-    <div className={styles.canvasWrapper}>
-      <canvas
-        id="canvas"
-        ref={canvasRef}
-        width={canvasSize.width + 30} // 화살표가 밖으로 나가서 임시로 값 추가
-        height={canvasSize.height + 130} // 화살표가 밖으로 나가서 임시로 값 추가
-      ></canvas>
-      <ul>
-        {stores.map((store) => {
-          const { storeSize, halfStoreSize } = marketSize(store.total, maxTotalMovement);
-
-          return (
-            <li
-              id={store.name}
-              className={
-                styles.storeList +
-                ' ' +
-                (selectedStores.find((v) => v.name === store.name) ? styles.active : '')
-              }
-              key={store.name}
-              onClick={setSelectedStoresHandler}
-              style={{
-                left: `${store.coodinate[0] - halfStoreSize}px`,
-                top: `${store.coodinate[1] - halfStoreSize}px`,
-                width: `${storeSize}px`,
-                height: `${storeSize}px`,
-              }}
-            >
-              {store.name}
-            </li>
-          );
-        })}
-      </ul>
+    <>
       <button onClick={selectedStoresResetHandler}>RESET</button>
-      <div
-        style={{
-          position: 'absolute',
-          top: renderData.y + 10 + 'px',
-          left: renderData.x + 10 + 'px',
-          backgroundColor: 'black',
-          color: 'white',
-          display: displayMovement ? 'block' : 'none',
-        }}
-      >
-        {renderData.startStore + ' -> ' + renderData.endStore + '/' + renderData.movement}
+      <div className={styles.canvasWrapper}>
+        <canvas
+          id="canvas"
+          ref={canvasRef}
+          width={canvasSize.width + 100} // 화살표가 밖으로 나가서 임시로 값 추가
+          height={canvasSize.height + 200} // 화살표가 밖으로 나가서 임시로 값 추가
+        ></canvas>
+        <ul>
+          {stores.map((store) => {
+            const { storeSize, halfStoreSize } = marketSize(store.total, maxTotalMovement);
+
+            return (
+              <li
+                id={store.name}
+                className={
+                  styles.storeList +
+                  ' ' +
+                  (selectedStores.find((v) => v.name === store.name) ? styles.active : '')
+                }
+                key={store.name}
+                onClick={setSelectedStoresHandler}
+                style={{
+                  left: `${store.coodinate[0] - halfStoreSize}px`,
+                  top: `${store.coodinate[1] - halfStoreSize}px`,
+                  width: `${storeSize}px`,
+                  height: `${storeSize}px`,
+                }}
+              >
+                {store.name}
+              </li>
+            );
+          })}
+        </ul>
+        <div
+          style={{
+            position: 'absolute',
+            top: renderData.y + 10 + 'px',
+            left: renderData.x + 10 + 'px',
+            backgroundColor: 'black',
+            color: 'white',
+            display: displayMovement ? 'block' : 'none',
+          }}
+        >
+          {renderData.startStore + ' -> ' + renderData.endStore + '/' + renderData.movement}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
