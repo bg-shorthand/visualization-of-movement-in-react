@@ -20,7 +20,11 @@ const Admin = () => {
     if (!newStoreName.length) return alert('매장 이름을 입력해주세요.');
     else if (stores.find((store) => store.name === newStoreName))
       return alert('이미 등록된 매장입니다.');
-    else setStores((pre) => [...pre, { name: newStoreName, coodinate: [0, 0], movement: {} }]);
+    else
+      setStores((pre) => [
+        ...pre,
+        { name: newStoreName, coodinate: [0, 0], movement: {}, total: 0 },
+      ]);
   };
 
   const setCoodinateHandler: MouseEventHandler = (e) => {
@@ -35,8 +39,9 @@ const Admin = () => {
                 coodinate[1] + (pageY - startCoodinate[1]),
               ],
               movement: {},
+              total: 0,
             }
-          : { name, coodinate, movement: {} }
+          : { name, coodinate, movement: {}, total: 0 }
       )
     );
   };
